@@ -1,34 +1,91 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Tipper from './components/editor/Tipper'
+import axios from 'axios'
 import './App.css'
 
+// Define types locally for now or move to shared types
+interface ParsedDocument {
+  filename: string
+  paragraphs: any[]
+  metadata: any
+}
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [document, setDocument] = useState<ParsedDocument | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    setLoading(true)
+    setError(null)
+    setDocument(null)
+    setSelectedId(null)
+
+    const formData = new FormData()
+    formData.append('file', file)
+
+    try {
+      // Assuming backend is at localhost:8000 based on docker-compose
+      // We might need to handle CORS or proxy in Vite
+      const response = await axios.post('http://localhost:8000/documents/parse', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      setDocument(response.data)
+    } catch (err) {
+      console.error(err)
+      setError('Failed to parse document. Ensure backend is running.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="container mx-auto p-8 max-w-4xl flex gap-6">
+      <div className="flex-1">
+        <header className="mb-8">
+          <h1 className="text-3xl font-bold mb-2">Sync Orchestrator</h1>
+          <p className="text-gray-600">Upload a .docx file to parse and render.</p>
+        </header>
+
+        <div className="mb-8 p-6 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+          <input
+            type="file"
+            accept=".docx"
+            onChange={handleFileUpload}
+            className="block w-full text-sm text-gray-500
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-full file:border-0
+              file:text-sm file:font-semibold
+              file:bg-blue-50 file:text-blue-700
+              hover:file:bg-blue-100"
+          />
+          {loading && <p className="mt-2 text-blue-600">Parsing document...</p>}
+          {error && <p className="mt-2 text-red-600">{error}</p>}
+        </div>
+
+        <div className="editor-container">
+          <Tipper document={document} onSelectionUpdate={setSelectedId} />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+
+      <div className="w-64">
+        <div className="sticky top-8 bg-white p-4 border rounded-lg shadow-sm">
+          <h3 className="text-lg font-semibold mb-2">Debug Panel</h3>
+          <div className="text-sm">
+            <p className="font-medium text-gray-500">Selected ID (XPath)</p>
+            <div className="mt-1 p-2 bg-gray-100 rounded font-mono text-xs break-all min-h-[40px]">
+              {selectedId || 'Click in editor...'}
+            </div>
+          </div>
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 

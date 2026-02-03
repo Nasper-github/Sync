@@ -3,9 +3,9 @@ Project Sync - Orchestrator State
 Sprint 1: Foundation
 
 ⚡ Active Task
-Task: S1.2 - Document parser with format map
+Task: S1.4 - Text selection tracking
 
-Status: COMPLETED
+Status: IN_PROGRESS
 
 Priority: Critical (Required for all subsequent tasks)
 
@@ -33,9 +33,9 @@ Create FormatMap for XPath expression linking
 
 Ensure run-level formatting preservation
 
-[ ] S1.3 - Basic TipTap editor rendering .docx
+[x] S1.3 - Basic TipTap editor rendering .docx
 
-[ ] S1.4 - Text selection tracking
+[/] S1.4 - Text selection tracking
 
 [ ] S1.5 - Side panel component
 
