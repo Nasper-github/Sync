@@ -5,7 +5,7 @@ Sprint 1: Foundation
 ⚡ Active Task
 Task: S1.4 - Text selection tracking
 
-Status: IN_PROGRESS
+Status: COMPLETED
 
 Priority: Critical (Required for all subsequent tasks)
 
@@ -35,9 +35,9 @@ Ensure run-level formatting preservation
 
 [x] S1.3 - Basic TipTap editor rendering .docx
 
-[/] S1.4 - Text selection tracking
+[x] S1.4 - Text selection tracking
 
-[ ] S1.5 - Side panel component
+[x] S1.5 - Side panel component
 
 [ ] S1.6 - FastAPI endpoints for document CRUD
 

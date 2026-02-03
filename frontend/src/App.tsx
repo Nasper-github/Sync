@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Tipper from './components/editor/Tipper'
+import SidePanel from './components/layout/SidePanel'
 import axios from 'axios'
 import './App.css'
 
@@ -74,17 +75,7 @@ function App() {
         </div>
       </div>
 
-      <div className="w-64">
-        <div className="sticky top-8 bg-white p-4 border rounded-lg shadow-sm">
-          <h3 className="text-lg font-semibold mb-2">Debug Panel</h3>
-          <div className="text-sm">
-            <p className="font-medium text-gray-500">Selected ID (XPath)</p>
-            <div className="mt-1 p-2 bg-gray-100 rounded font-mono text-xs break-all min-h-[40px]">
-              {selectedId || 'Click in editor...'}
-            </div>
-          </div>
-        </div>
-      </div>
+      <SidePanel document={document} selectedId={selectedId} />
     </div>
   )
 }
