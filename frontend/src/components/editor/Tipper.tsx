@@ -3,6 +3,7 @@ import { StarterKit } from '@tiptap/starter-kit'
 import { Underline } from '@tiptap/extension-underline'
 import { TextStyle } from '@tiptap/extension-text-style'
 import { useEffect } from 'react'
+import { TextId } from './extensions/TextId'
 
 // Types mirroring backend models
 interface FormatAttributes {
@@ -41,6 +42,7 @@ const Tipper = ({ document, onSelectionUpdate }: TipperProps) => {
             StarterKit,
             Underline,
             TextStyle,
+            TextId,
         ],
         content: '<p>Upload a document to see content here...</p>',
         editable: false,
